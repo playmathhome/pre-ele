@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allUnits = await getCollection('math-units');
+
+// 단원 정보 추출 및 정렬 (파일명 순)
+const units = allUnits.sort((a, b) => a.id.localeCompare(b.id));
+
+const ages = [
+  { id: '3', label: '만 3세반', color: 'bg-[#FEF9C3]' },
+  { id: '4', label: '만 4세반', color: 'bg-[#D1FAE5]' },
+  { id: '5', label: '만 5세반', color: 'bg-[#FEE2E2]' },
+];
+
+const mathGrades = [
+  { id: '1-1', label: '초등 1-1 수학' },
+  { id: '1-2', label: '초등 1-2 수학' },
+];
+---
+
+<BaseLayout>
+  <main class="max-w-5xl mx-auto px-4 py-12">
+    <!-- Hero Section -->
+    <section class="text-center mb-16 relative">
+      <div class="absolute inset-0 -z-10 translate-y-12">
+        <div class="absolute left-1/2 top-0 -translate-x-1/2 w-3/4 h-32 bg-gradient-to-r from-[#FEF9C3] via-[#D1FAE5] to-[#FEE2E2] blur-3xl opacity-50 rounded-full"></div>
+      </div>
+      
+      <span class="inline-block py-2 px-6 rounded-full bg-[#D1FAE5] text-[#059669] text-lg font-bold mb-6 tracking-wide shadow-sm">
+        ✨ 엄마표·아빠표 창의 수학 홈스쿨링
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-800 mb-6 leading-tight tracking-tight">
+        일상의 놀이가<br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-[#3B82F6]">완벽한 수학 교실</span>이 됩니다
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed break-keep">
+        AI 시대, 진짜 필요한 것은 단순 암기식 선행학습이 아닌 <strong>'창의성'</strong>입니다.<br/>
+        특별한 교구 없이 주변의 모든 것으로 누리과정과 연계된<br/> <strong class="font-bold text-gray-800">즐거운 초등 수학 탐험</strong>을 지금 집에서 시작해 보세요!
+      </p>
+    </section>
+
+    <!-- Philosophy Cards -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 relative z-10 text-left">
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:-translate-y-1 transition-transform">
+        <div class="w-12 h-12 bg-[#FEF9C3] rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-inner mx-auto">🧸</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">비용 부담 없는 놀이</h3>
+        <p class="text-gray-600 leading-relaxed text-base text-justify break-all">비싼 학원이나 화려한 교구를 찾을 필요가 없습니다. 집에 있는 과자, 장난감, 아빠의 신발이 호기심을 자극하는 최고의 교재가 됩니다.</p>
+      </div>
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:-translate-y-1 transition-transform">
+        <div class="w-12 h-12 bg-[#D1FAE5] rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-inner mx-auto">💡</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">AI 시대의 창의성</h3>
+        <p class="text-gray-600 leading-relaxed text-base text-justify break-all">정해진 답을 빨리 찾는 연습보다는, 주변 환경을 재미있게 탐색하고 자기만의 방법으로 문제를 해결하며 폭발적인 창의성을 기릅니다.</p>
+      </div>
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:-translate-y-1 transition-transform">
+        <div class="w-12 h-12 bg-[#FEE2E2] rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-inner mx-auto">🌱</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">자연스러운 수학 연결</h3>
+        <p class="text-gray-600 leading-relaxed text-base text-justify break-all">유아기 누리과정의 발달에 맞춰 초등 1학년 수학을 물 흐르듯 접하게 됩니다. 선행학습으로 인한 부담감과 학습 격차의 불안감을 덜어드립니다.</p>
+      </div>
+    </section>
+
+    <!-- Step 1 안내 -->
+    <div class="text-center mb-8 relative">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Step 1. 아이의 연령을 선택해 주세요 👇</h2>
+      <p class="text-gray-500 text-base">발달 단계에 딱 맞는 놀이 아이디어를 확인하실 수 있습니다.</p>
+    </div>
+
+    <!-- 연령별 탭 -->
+    <div class="flex justify-center gap-4 mb-8">
+      {ages.map((age) => (
+        <button 
+          class={`age-tab px-8 py-3 rounded-full text-xl font-bold shadow-md hover:scale-105 transition-transform cursor-pointer ${age.color}`}
+          data-age={age.id}
+        >
+          {age.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Step 2 안내 (숨겨져 있다가 탭 클릭 시 노출) -->
+    <div id="step2-header" class="hidden text-center mb-8 opacity-0 -translate-y-4 transition-all duration-300">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Step 2. 학습 과정을 선택해 주세요 👇</h2>
+      <p class="text-gray-500 text-base">아이의 관심사에 맞는 과정을 선택하세요.</p>
+    </div>
+
+    <!-- 하위 메뉴 (알약 버튼) -->
+    <div id="math-grade-container" class="hidden justify-center gap-4 mb-12 opacity-0 -translate-y-4 transition-all duration-300">
+      {mathGrades.map((grade) => (
+        <button 
+          class="grade-tab px-6 py-2 rounded-full border-2 border-[#D1FAE5] bg-white text-lg font-bold hover:bg-[#D1FAE5] transition-colors cursor-pointer"
+          data-grade={grade.id}
+        >
+          {grade.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Step 3 안내 (학년 선택 시 노출) -->
+    <div id="step3-header" class="hidden text-center mb-8 opacity-0 -translate-y-4 transition-all duration-300">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Step 3. 학습 단원을 선택해 주세요 👇</h2>
+      <p class="text-gray-500 text-base">흥미진진한 수학 탐험을 시작할 단원을 골라보세요.</p>
+    </div>
+
+    <!-- 단원 그리드 세로 리스트 -->
+    <div id="unit-grid-container" class="hidden flex-col items-center max-w-md mx-auto w-full gap-6 opacity-0 translate-y-4 transition-all duration-500">
+      {units.map((unit) => {
+        // unit.id가 없으면 unit.slug(구버전)이나 다른 속성을 확인
+        const unitId = unit.id || (unit as any).slug;
+        const displayTitle = unitId === 'grade1-1-unit1' ? '1단원. 9까지의 수' :
+                            unitId === 'grade1-1-unit2' ? '2단원. 여러 가지 모양' :
+                            unitId === 'grade1-1-unit3' ? '3단원. 덧셈과 뺄셈' :
+                            unitId === 'grade1-1-unit4' ? '4단원. 비교하기' :
+                            '5단원. 50까지의 수';
+
+        return (
+          <a href={`/${unitId}`} class="block group w-full">
+            <div class="bg-white p-6 rounded-3xl shadow-lg border-b-8 border-gray-100 group-hover:bg-[#FDF2F8] group-hover:border-[#FBCFE8] group-hover:shadow-pink-100/50 group-hover:-translate-y-2 transition-all duration-300 h-full flex flex-col justify-center items-center text-center">
+              <span class="text-4xl mb-4 group-hover:scale-110 transition-transform">⭐</span>
+              <h3 class="text-2xl font-bold text-gray-800 group-hover:text-pink-900 transition-colors">{displayTitle}</h3>
+              <p class="text-lg text-gray-500 mt-2 group-hover:text-pink-700 transition-colors">재미있는 놀이로 배워요!</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+  </main>
+
+  <script>
+    const ageTabs = document.querySelectorAll('.age-tab');
+    const gradeTabs = document.querySelectorAll('.grade-tab');
+    const step2Header = document.getElementById('step2-header');
+    const step3Header = document.getElementById('step3-header');
+    const gradeContainer = document.getElementById('math-grade-container');
+    const unitContainer = document.getElementById('unit-grid-container');
+
+    // Step 1: 연령 선택 시
+    ageTabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        if (step2Header && gradeContainer) {
+          step2Header.classList.remove('hidden');
+          gradeContainer.classList.remove('hidden');
+          gradeContainer.classList.add('flex');
+          
+          setTimeout(() => {
+            step2Header.classList.remove('opacity-0', '-translate-y-4');
+            step2Header.classList.add('opacity-100', 'translate-y-0');
+            gradeContainer.classList.remove('opacity-0', '-translate-y-4');
+            gradeContainer.classList.add('opacity-100', 'translate-y-0');
+          }, 10);
+          
+          // 연령 재선택 시 Step 3는 숨김 처리
+          if (step3Header && unitContainer) {
+            step3Header.classList.add('hidden', 'opacity-0', '-translate-y-4');
+            step3Header.classList.remove('opacity-100', 'translate-y-0');
+            unitContainer.classList.add('hidden', 'opacity-0', 'translate-y-4');
+            unitContainer.classList.remove('flex', 'opacity-100', 'translate-y-0');
+          }
+        }
+      });
+    });
+
+    // Step 2: 학년 선택 시
+    gradeTabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLElement;
+        const grade = target.dataset.grade;
+        
+        // 초등 1-1 수학 탭을 클릭했을 때만 Step 3 표시
+        if (grade === '1-1') {
+          if (step3Header && unitContainer) {
+            step3Header.classList.remove('hidden');
+            unitContainer.classList.remove('hidden');
+            unitContainer.classList.add('flex');
+            
+            setTimeout(() => {
+              step3Header.classList.remove('opacity-0', '-translate-y-4');
+              step3Header.classList.add('opacity-100', 'translate-y-0');
+              unitContainer.classList.remove('opacity-0', 'translate-y-4');
+              unitContainer.classList.add('opacity-100', 'translate-y-0');
+            }, 10);
+          }
+        } else {
+            // 다른 학년 선택 시 (데이터가 없을 경우 등) Step 3 숨김
+            if (step3Header && unitContainer) {
+                step3Header.classList.add('hidden', 'opacity-0', '-translate-y-4');
+                unitContainer.classList.add('hidden', 'opacity-0', 'translate-y-4');
+            }
+        }
+      });
+    });
+  </script>
+</BaseLayout>

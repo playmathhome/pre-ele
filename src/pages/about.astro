@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="사이트 소개 - 창의 수학 홈스쿨링" description="유아기 발달에 맞춘 일상 놀이 기반 창의 수학 교육 철학을 소개합니다.">
+  <div class="max-w-4xl mx-auto py-16 px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block py-3 px-8 rounded-full bg-[#E0E7FF] text-[#4338CA] text-lg font-bold mb-6 tracking-wide shadow-sm">
+        ✨ 우리 아이 첫 수학
+      </span>
+      <h1 class="text-4xl md:text-5xl font-black text-gray-800 mb-6 leading-tight tracking-tight">
+        우리가 꿈꾸는 <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-[#3B82F6]">진짜 수학 교육</span>
+      </h1>
+    </div>
+
+    <!-- Intro Box -->
+    <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-gray-200/40 border border-gray-100 mb-16 relative overflow-hidden group hover:border-[#10B981]/30 transition-colors">
+      <div class="absolute -right-10 -top-10 w-40 h-40 bg-gradient-to-br from-[#FEF9C3] to-[#D1FAE5] rounded-full blur-3xl opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
+      <p class="text-xl md:text-2xl font-bold text-gray-800 leading-relaxed break-keep relative z-10 text-center">
+        "AI 시대, 무작정 답을 찾는 훈련보다는 <br class="hidden md:block"/> <span class="text-[#10B981]">문제를 스스로 생각하고 해결하는 힘</span>이 중요해졌습니다."
+      </p>
+      <p class="mt-8 text-gray-600 text-lg leading-relaxed break-keep relative z-10 text-justify">
+        저희 사이트는 <strong class="font-bold text-gray-800">누리과정(만 3~5세)에 해당하는 아이들이 가정에서 쉽고 재미있게 초등 수학의 기초</strong>를 다질 수 있도록 돕습니다. 어려운 학습지가 아닌, 일상 속 작은 놀이를 통해 아이들의 호기심과 잠재력을 깨워주세요.
+      </p>
+    </div>
+
+    <!-- Philosophy Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Card 1 -->
+      <div class="bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] p-8 md:p-10 rounded-3xl border border-gray-100 hover:-translate-y-2 transition-transform duration-300 shadow-sm hover:shadow-xl">
+        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl mb-8 shadow-sm mx-auto">🧸</div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">비용 부담 없는 놀이</h3>
+        <p class="text-gray-600 text-base leading-relaxed break-keep text-justify">
+          선행학습이 꼭 필요할까 고민하면서도 뒤처질까 봐 불안하신 부모님들의 마음을 누구보다 잘 압니다. 수십만 원짜리 화려한 교구 없이도, <strong class="text-gray-800">집에 있는 장난감과 과자들</strong>이 훌륭한 교재가 될 수 있습니다.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] p-8 md:p-10 rounded-3xl border border-gray-100 hover:-translate-y-2 transition-transform duration-300 shadow-sm hover:shadow-xl">
+        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl mb-8 shadow-sm mx-auto">🌱</div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">자연스럽게 스며드는 학습</h3>
+        <p class="text-gray-600 text-base leading-relaxed break-keep text-justify">
+          강압적인 교육은 수학에 대한 흥미를 떨어뜨립니다. 생활 속에서 놀이하듯 자연스럽게 초등 1학년 수학을 접하게 해 주세요. <strong class="text-gray-800">이 작은 성공 경험들이 모여</strong> 스스로 학습하는 즐거움을 깨닫게 됩니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
