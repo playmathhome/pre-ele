@@ -20,6 +20,35 @@ const mathGrades = [
 ---
 
 <BaseLayout>
+  <style is:global>
+    /* 학년 탭 테마 색상 (만 3세반) */
+    .grade-theme-3 {
+      border-color: #FDE047;
+    }
+    .grade-theme-3:hover,
+    .grade-theme-3.active {
+      background-color: #FEF9C3;
+    }
+
+    /* 학년 탭 테마 색상 (만 4세반) */
+    .grade-theme-4 {
+      border-color: #D1FAE5;
+    }
+    .grade-theme-4:hover,
+    .grade-theme-4.active {
+      background-color: #D1FAE5;
+    }
+
+    /* 학년 탭 테마 색상 (만 5세반) */
+    .grade-theme-5 {
+      border-color: #FEE2E2;
+    }
+    .grade-theme-5:hover,
+    .grade-theme-5.active {
+      background-color: #FEE2E2;
+    }
+  </style>
+
   <main class="max-w-5xl mx-auto px-4 py-12">
     <!-- Hero Section -->
     <section class="text-center mb-16 relative">
@@ -86,7 +115,7 @@ const mathGrades = [
     <div id="math-grade-container" class="hidden justify-center gap-4 mb-12 opacity-0 -translate-y-4 transition-all duration-300">
       {mathGrades.map((grade) => (
         <button 
-          class="grade-tab px-6 py-2 rounded-full border-2 border-[#D1FAE5] bg-white text-lg font-bold hover:bg-[#D1FAE5] transition-colors cursor-pointer"
+          class="grade-tab px-6 py-2 rounded-full border-2 bg-white text-lg font-bold transition-colors cursor-pointer grade-theme-3"
           data-grade={grade.id}
         >
           {grade.label}
@@ -181,6 +210,12 @@ const mathGrades = [
         selectedAge = target.dataset.age || '3';
         selectedGrade = ''; // 학년 선택기 초기화
         
+        // 학년 탭 테마 변경 및 활성 상태 초기화
+        gradeTabs.forEach(t => {
+            t.classList.remove('grade-theme-3', 'grade-theme-4', 'grade-theme-5', 'active');
+            t.classList.add(`grade-theme-${selectedAge}`);
+        });
+        
         // 연령 재선택 시 Step 3는 일단 숨김 처리 (학년을 다시 선택하게 함)
         if (step3Header && unitContainer) {
             step3Header.classList.add('hidden', 'opacity-0', '-translate-y-4');
@@ -209,6 +244,10 @@ const mathGrades = [
       tab.addEventListener('click', (e) => {
         const target = e.currentTarget as HTMLElement;
         selectedGrade = target.dataset.grade || '';
+        
+        // 클릭된 학년 탭 활성화 (색상 유지)
+        gradeTabs.forEach(t => t.classList.remove('active'));
+        target.classList.add('active');
         
         updateUnits();
       });
