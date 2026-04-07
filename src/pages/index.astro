@@ -15,7 +15,7 @@ const ages = [
 
 const mathGrades = [
   { id: '1-1', label: '초등 1-1 수학' },
-  { id: '1-2', label: '초등 1-2 수학' },
+  { id: '2-1', label: '초등 2-1 수학' },
 ];
 ---
 
@@ -54,7 +54,7 @@ const mathGrades = [
       <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-xl shadow-gray-200/50 hover:-translate-y-1 transition-transform">
         <div class="w-12 h-12 bg-[#FEE2E2] rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-inner mx-auto">🌱</div>
         <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">자연스러운 수학 연결</h3>
-        <p class="text-gray-600 leading-relaxed text-base text-justify break-all">유아기 누리과정의 발달에 맞춰 초등 1학년 수학을 물 흐르듯 접하게 됩니다. 선행학습으로 인한 부담감과 학습 격차의 불안감을 덜어드립니다.</p>
+        <p class="text-gray-600 leading-relaxed text-base text-justify break-all">유아기 누리과정의 발달에 맞춰 초등학교 1, 2학년 수학을 물 흐르듯 접하게 됩니다. 선행학습으로 인한 부담감과 학습 격차의 불안감을 덜어드립니다.</p>
       </div>
     </section>
 
@@ -105,14 +105,26 @@ const mathGrades = [
       {units.map((unit) => {
         // unit.id가 없으면 unit.slug(구버전)이나 다른 속성을 확인
         const unitId = unit.id || (unit as any).slug;
-        const displayTitle = unitId === 'grade1-1-unit1' ? '1단원. 9까지의 수' :
-                            unitId === 'grade1-1-unit2' ? '2단원. 여러 가지 모양' :
-                            unitId === 'grade1-1-unit3' ? '3단원. 덧셈과 뺄셈' :
-                            unitId === 'grade1-1-unit4' ? '4단원. 비교하기' :
-                            '5단원. 50까지의 수';
+        const matchAge = unitId.match(/^age(\d+)-/);
+        const ageNum = matchAge ? matchAge[1] : '3';
+        const matchGrade = unitId.match(/grade(\d+-\d+)-/);
+        const gradeText = matchGrade ? matchGrade[1] : '1-1';
+        
+        let displayTitle = '';
+        if (unitId.includes('grade1-1-unit1')) displayTitle = '1단원. 9까지의 수';
+        else if (unitId.includes('grade1-1-unit2')) displayTitle = '2단원. 여러 가지 모양';
+        else if (unitId.includes('grade1-1-unit3')) displayTitle = '3단원. 덧셈과 뺄셈';
+        else if (unitId.includes('grade1-1-unit4')) displayTitle = '4단원. 비교하기';
+        else if (unitId.includes('grade1-1-unit5')) displayTitle = '5단원. 50까지의 수';
+        else if (unitId.includes('grade2-1-unit1')) displayTitle = '1단원. 세 자리 수';
+        else if (unitId.includes('grade2-1-unit2')) displayTitle = '2단원. 여러 가지 도형';
+        else if (unitId.includes('grade2-1-unit3')) displayTitle = '3단원. 덧셈과 뺄셈';
+        else if (unitId.includes('grade2-1-unit4')) displayTitle = '4단원. 길이 재기';
+        else if (unitId.includes('grade2-1-unit5')) displayTitle = '5단원. 분류하기';
+        else if (unitId.includes('grade2-1-unit6')) displayTitle = '6단원. 곱셈';
 
         return (
-          <a href={`/${unitId}`} class="block group w-full">
+          <a href={`/${unitId}`} class={`unit-link age-filter-${ageNum} grade-filter-${gradeText} block group w-full`} style="display: none;">
             <div class="bg-white p-6 rounded-3xl shadow-lg border-b-8 border-gray-100 group-hover:bg-[#FDF2F8] group-hover:border-[#FBCFE8] group-hover:shadow-pink-100/50 group-hover:-translate-y-2 transition-all duration-300 h-full flex flex-col justify-center items-center text-center">
               <span class="text-4xl mb-4 group-hover:scale-110 transition-transform">⭐</span>
               <h3 class="text-2xl font-bold text-gray-800 group-hover:text-pink-900 transition-colors">{displayTitle}</h3>
@@ -132,10 +144,51 @@ const mathGrades = [
     const step3Header = document.getElementById('step3-header');
     const gradeContainer = document.getElementById('math-grade-container');
     const unitContainer = document.getElementById('unit-grid-container');
+    const unitLinks = document.querySelectorAll('.unit-link');
+    
+    let selectedAge = '3';
+    let selectedGrade = '';
+
+    function updateUnits() {
+        if (!selectedAge || !selectedGrade) return;
+
+        unitLinks.forEach(link => {
+            (link as HTMLElement).style.display = 'none';
+        });
+
+        document.querySelectorAll(`.age-filter-${selectedAge}.grade-filter-${selectedGrade}`).forEach(link => {
+            (link as HTMLElement).style.display = 'block';
+        });
+        
+        if (step3Header && unitContainer) {
+            step3Header.classList.remove('hidden');
+            unitContainer.classList.remove('hidden');
+            unitContainer.classList.add('flex');
+            
+            setTimeout(() => {
+              step3Header.classList.remove('opacity-0', '-translate-y-4');
+              step3Header.classList.add('opacity-100', 'translate-y-0');
+              unitContainer.classList.remove('opacity-0', 'translate-y-4');
+              unitContainer.classList.add('opacity-100', 'translate-y-0');
+            }, 10);
+        }
+    }
 
     // Step 1: 연령 선택 시
     ageTabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLElement;
+        selectedAge = target.dataset.age || '3';
+        selectedGrade = ''; // 학년 선택기 초기화
+        
+        // 연령 재선택 시 Step 3는 일단 숨김 처리 (학년을 다시 선택하게 함)
+        if (step3Header && unitContainer) {
+            step3Header.classList.add('hidden', 'opacity-0', '-translate-y-4');
+            step3Header.classList.remove('opacity-100', 'translate-y-0');
+            unitContainer.classList.add('hidden', 'opacity-0', 'translate-y-4');
+            unitContainer.classList.remove('flex', 'opacity-100', 'translate-y-0');
+        }
+
         if (step2Header && gradeContainer) {
           step2Header.classList.remove('hidden');
           gradeContainer.classList.remove('hidden');
@@ -147,14 +200,6 @@ const mathGrades = [
             gradeContainer.classList.remove('opacity-0', '-translate-y-4');
             gradeContainer.classList.add('opacity-100', 'translate-y-0');
           }, 10);
-          
-          // 연령 재선택 시 Step 3는 숨김 처리
-          if (step3Header && unitContainer) {
-            step3Header.classList.add('hidden', 'opacity-0', '-translate-y-4');
-            step3Header.classList.remove('opacity-100', 'translate-y-0');
-            unitContainer.classList.add('hidden', 'opacity-0', 'translate-y-4');
-            unitContainer.classList.remove('flex', 'opacity-100', 'translate-y-0');
-          }
         }
       });
     });
@@ -163,29 +208,9 @@ const mathGrades = [
     gradeTabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
         const target = e.currentTarget as HTMLElement;
-        const grade = target.dataset.grade;
+        selectedGrade = target.dataset.grade || '';
         
-        // 초등 1-1 수학 탭을 클릭했을 때만 Step 3 표시
-        if (grade === '1-1') {
-          if (step3Header && unitContainer) {
-            step3Header.classList.remove('hidden');
-            unitContainer.classList.remove('hidden');
-            unitContainer.classList.add('flex');
-            
-            setTimeout(() => {
-              step3Header.classList.remove('opacity-0', '-translate-y-4');
-              step3Header.classList.add('opacity-100', 'translate-y-0');
-              unitContainer.classList.remove('opacity-0', 'translate-y-4');
-              unitContainer.classList.add('opacity-100', 'translate-y-0');
-            }, 10);
-          }
-        } else {
-            // 다른 학년 선택 시 (데이터가 없을 경우 등) Step 3 숨김
-            if (step3Header && unitContainer) {
-                step3Header.classList.add('hidden', 'opacity-0', '-translate-y-4');
-                unitContainer.classList.add('hidden', 'opacity-0', 'translate-y-4');
-            }
-        }
+        updateUnits();
       });
     });
   </script>
